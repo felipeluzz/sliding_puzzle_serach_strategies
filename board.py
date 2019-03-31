@@ -1,5 +1,5 @@
 import sys
-import itertools
+import state
 import numpy as np
 
 # Class that represents the sliding puzzle board
@@ -8,7 +8,7 @@ class Board:
     def __init__(self, size):
         self.size = size
         self.board = self.random_board()
-        print(self.board)
+        self.initial_state = state.State(self.size, self.board)
 
     # Generate victory state
     def winning_board(self):
@@ -50,7 +50,7 @@ class Board:
                     invertion_count += 1
         return invertion_count 
 
-    # Check if the blank is in and even row
+    # Check if the blank is in and even row, counting from the bottom
     def even_blank_position(self, board):
         position = self.size - np.where(board == 0)[0] 
         if (position % 2) == 0:
@@ -69,6 +69,10 @@ class Board:
     # Set board
     def set_board(self, board):
         self.board = board
+
+    # Get initial state
+    def get_initial_state(self):
+        return self.initial_state
         
 
 # TEST
