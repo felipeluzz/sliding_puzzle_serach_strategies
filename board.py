@@ -75,9 +75,5 @@ class Board:
         return self.initial_state
         
 
-# TEST
-if len(sys.argv) > 1:
-    board = Board(int(sys.argv[1]))
-else:
-    sys.exit("Missing parameter: board size") 
+
 

@@ -46,7 +46,7 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_up()
-        return State(new_state, self.size, self, self.blank_x, self.blank_y + 1)
+        return State(self.size, new_state, self, self.blank_x, self.blank_y + 1)
 
     # Method that that moves a piece upwards
     def move_up(self):
@@ -76,7 +76,7 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_down()
-        return State(new_state, self.size, self, self.blank_x, self.blank_y - 1)
+        return State(self.size, new_state, self, self.blank_x, self.blank_y - 1)
 
     # Method that that moves a piece downwards
     def move_down(self):
@@ -106,7 +106,7 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_left()
-        return State(new_state, self.size, self, self.blank_x + 1, self.blank_y)
+        return State(self.size, new_state, self, self.blank_x + 1, self.blank_y)
 
     # Method that that moves a piece left
     def move_left(self):
@@ -136,16 +136,14 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_right()
-        return State(new_state, self.size, self, self.blank_x - 1, self.blank_y)
+        return State(self.size, new_state, self, self.blank_x - 1, self.blank_y)
 
     # Method that that moves a piece right
     def move_right(self):
-        print(self.current_state)
         # Copy the current state matrix and them change its values
         new_state = copy.deepcopy(self.current_state)
         new_state[self.blank_y][self.blank_x] = new_state[self.blank_y][self.blank_x - 1]
         new_state[self.blank_y][self.blank_x - 1] = 0
-        print(new_state)
         return new_state
 
    # ------------------- Getters ----------------------------------------
@@ -163,6 +161,22 @@ class State:
 
     def get_current_level(self):
         return self.current_level
+
+    def get_children(self):
+        children = []
+        up_state = self.up_state()
+        if not up_state is None:
+            children.append(up_state)
+        down_state = self.down_state()
+        if not down_state is None:
+            children.append(down_state)
+        left_state = self.left_state()
+        if not left_state is None:
+            children.append(left_state)
+        right_state = self.right_state()
+        if not right_state is None:
+            children.append(right_state)
+        return children
 
     
         
