@@ -1,5 +1,6 @@
 import sys
 import copy 
+import itertools
 import numpy as np
 
 # Class that represents a state in the game's decision tree
@@ -46,6 +47,13 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_up()
+
+        # Avoids returning to the parent
+        parents = self.parent_states()
+        for parent in parents:
+            if np.array_equal(new_state, parent):
+                return None
+
         return State(self.size, new_state, self, self.blank_x, self.blank_y + 1)
 
     # Method that that moves a piece upwards
@@ -76,6 +84,13 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_down()
+
+        # Avoids returning to the parent
+        parents = self.parent_states()
+        for parent in parents:
+            if np.array_equal(new_state, parent):
+                return None
+
         return State(self.size, new_state, self, self.blank_x, self.blank_y - 1)
 
     # Method that that moves a piece downwards
@@ -106,6 +121,13 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_left()
+
+        # Avoids returning to the parent
+        parents = self.parent_states()
+        for parent in parents:
+            if np.array_equal(new_state, parent):
+                return None
+
         return State(self.size, new_state, self, self.blank_x + 1, self.blank_y)
 
     # Method that that moves a piece left
@@ -136,6 +158,13 @@ class State:
             return None
         # If the movement is possible, make it and return the new state
         new_state = self.move_right()
+
+        # Avoids returning to the parent
+        parents = self.parent_states()
+        for parent in parents:
+            if np.array_equal(new_state, parent):
+                return None
+
         return State(self.size, new_state, self, self.blank_x - 1, self.blank_y)
 
     # Method that that moves a piece right
@@ -145,6 +174,25 @@ class State:
         new_state[self.blank_y][self.blank_x] = new_state[self.blank_y][self.blank_x - 1]
         new_state[self.blank_y][self.blank_x - 1] = 0
         return new_state
+
+    # ---------------------------------- Auxiliary methods ----------------------------
+    # Method that store the parents, to avoid loops in the search
+    def parent_states(self):
+        parents = []
+        parent = self
+        for _ in itertools.repeat(None, 3):
+
+            # Get the parent
+            parent = parent.get_father_state()
+
+            # Check if the parent exists
+            if parent is None:
+                return parents
+
+            # Add the parent to the array
+            parents.append(parent.get_current_state())
+
+        return parents
 
    # ------------------- Getters ----------------------------------------
     def get_current_state(self):
