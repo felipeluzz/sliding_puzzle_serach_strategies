@@ -21,11 +21,16 @@ class State:
             self.current_level = father_state.current_level + 1
         if blank_x is None or blank_y is None:
             blank_position = np.where(current_state == 0)
+            print(current_state)
+            print(blank_position)
             self.blank_y = blank_position[0][0]
             self.blank_x = blank_position[1][0]
         else:
             self.blank_x = blank_x
             self.blank_y = blank_y
+
+    def __lt__(self, other):
+        return self.get_current_level() < other.get_current_level()
 
     # ----------------------- Up state methods ---------------------------
 

@@ -8,6 +8,8 @@ class Board:
     def __init__(self, size):
         self.size = size
         self.board = self.random_board()
+        # Test board below
+        # self.board = np.array([[7,1,2], [4,6,5], [3,8,0]])
         self.initial_state = state.State(self.size, self.board)
 
     # Generate victory state
@@ -19,8 +21,9 @@ class Board:
     # Generate random board
     def random_board(self):
         while True:
-            board = self.winning_board()
+            board = self.winning_board().flatten()
             np.random.shuffle(board)
+            board = board.reshape(self.size, self.size)
             if self.solvable(board):
                 break
         return board
